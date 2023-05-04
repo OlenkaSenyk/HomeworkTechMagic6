@@ -12,21 +12,14 @@ import { AddUserDialogComponent } from '../add-user-dialog/add-user-dialog.compo
 })
 export class UsersPageComponent {
   users: User[] = [];
-
   searchValue: string = '';
-  user: User = {
-    id: 18,
-    name: "name",
-    email: "email",
-    phone: "phone"
-  };
 
   constructor(private usersService: UsersService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.usersService.getAllUsers().subscribe({
       next: (data) => (this.users = data),
-      error: (error) => console.log(error.status),
+      error: (error) => alert(error.message),
     });
   }
 
@@ -42,37 +35,55 @@ export class UsersPageComponent {
   }
 
   onDelete() {
-    let forDelete: number[] = [];
+    const selectedUsers = this.users.filter((u) => u.select);
+    const forDelete = selectedUsers.map((u) => u.id);
+
     for (let i = 0; i < this.users.length; i++) {
       if (this.users[i].select) forDelete[i] = this.users[i].id;
     }
 
-    for (let i = 0; i < forDelete.length; i++)
+    for (let i = 0; i < forDelete.length; i++) {
+      let temp = true;
       this.usersService.deleteUser(forDelete[i]).subscribe({
         next: () => {
           const index = this.users.findIndex((u) => u.id === forDelete[i]);
           if (index > -1) {
             this.users.splice(index, 1);
           }
+          temp = true;
         },
-        error: (error) => alert(error.message),
+        error: (error) => {
+          alert(error.message);
+          temp = false;
+        },
       });
+      if (!temp) break;
+    }
   }
 
   onAdd() {
+    let user: User = {
+      id: this.users.length + 1,
+      name: '',
+      email: '',
+      phone: '',
+    };
+
     const dialog = this.dialog.open(AddUserDialogComponent, {
-      data: this.user,
+      data: user,
     });
 
     dialog.afterClosed().subscribe({
       next: (data) => {
-        this.user = data;
-        this.usersService.addUser(this.user).subscribe({
-         next: () => {
-           this.users.push(this.user);
-         },
-         error: (error) => alert(error.message)
-        })
+        user = data;
+        if (user.id !== -1) {
+          this.usersService.addUser(user).subscribe({
+            next: () => {
+              this.users.push(user);
+            },
+            error: (error) => alert(error.message),
+          });
+        }
       },
       error: (error) => alert(error.message),
     });
@@ -84,10 +95,8 @@ export class UsersPageComponent {
   }
 
   onSelectAll() {
-    let selected = this.users.filter((u) => u.select);
-    if (selected.length === this.users.length)
-      this.users.forEach((u) => (u.select = false));
-    else this.users.forEach((u) => (u.select = true));
+    const allSelected = this.users.every((u) => u.select);
+    this.users.forEach((u) => (u.select = !allSelected));
   }
 
   onSortAll($event: Event) {

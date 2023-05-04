@@ -5,25 +5,26 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HttpClientModule } from '@angular/common/http';
 import { AddUserDialogComponent } from './add-user-dialog/add-user-dialog.component';
-import {MatDialogModule} from "@angular/material/dialog";
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [UsersPageComponent, AddUserDialogComponent],
   exports: [UsersPageComponent, AddUserDialogComponent],
-    imports: [
-        CommonModule,
-        MatCardModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatToolbarModule,
-        MatInputModule,
-        FormsModule,
-        HttpClientModule,
-        MatDialogModule,
-    ],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatToolbarModule,
+    MatInputModule,
+    FormsModule,
+    HttpClientModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+  ],
 })
 export class UsersModule {}

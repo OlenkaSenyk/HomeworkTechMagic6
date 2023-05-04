@@ -9,18 +9,17 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { UsersModule } from './pages/users.module';
 
 @NgModule({
-    declarations: [AppComponent],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        UsersModule,
-        MatToolbarModule,
-        MatTabsModule,
-        BrowserAnimationsModule
-    ],
-    providers: [],
-    bootstrap: [AppComponent],
-    exports: [
-    ]
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    UsersModule,
+    MatToolbarModule,
+    MatTabsModule,
+    BrowserAnimationsModule,
+  ],
+  providers: [],
+  bootstrap: [AppComponent],
+  exports: [],
 })
 export class AppModule {}

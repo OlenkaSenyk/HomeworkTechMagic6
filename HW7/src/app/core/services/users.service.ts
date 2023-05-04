@@ -16,10 +16,6 @@ export class UsersService {
       .pipe(catchError(this.handleError));
   }
 
-  private handleError(error: HttpErrorResponse) {
-    return throwError(() => error);
-  }
-
   addUser(user: User) {
     return this.http.post(this.APIUrl, user).pipe(catchError(this.handleError));
   }
@@ -28,5 +24,9 @@ export class UsersService {
     return this.http
       .delete(this.APIUrl + id)
       .pipe(catchError(this.handleError));
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    return throwError(() => error);
   }
 }
